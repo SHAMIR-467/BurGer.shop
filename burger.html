@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BurgerForge | Premium Handcrafted Burgers</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            yellow: '#F59E0B',
+                            orange: '#D97706',
+                            red: '#EF4444',
+                            dark: '#111827',
+                            darker: '#0F1115'
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Bebas Neue', 'sans-serif'],
+                        body: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0F1115;
+            color: #F3F4F6;
+        }
+
+        .heading-font {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1F2937;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #D97706;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #F59E0B;
+        }
+
+        /* Animations */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(245, 158, 11, 0.6);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-slideInLeft {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .burger-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .burger-card:hover {
+            transform: translateY(-12px);
+        }
+
+        .burger-card:hover .burger-img {
+            transform: scale(1.15) rotate(3deg);
+        }
+
+        .burger-img {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Parallax Background */
+        .parallax-bg {
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(245, 158, 11, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(239, 68, 68, 0.05) 0%, transparent 50%);
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Stats Counter */
+        .stat-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        /* Gallery Hover Effect */
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .gallery-item:hover::before {
+            left: 100%;
+        }
+
+        /* Custom Badge */
+        .badge-hot {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .badge-new {
+            background: linear-gradient(135deg, #10B981, #059669);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Process Steps */
+        .process-step {
+            position: relative;
+        }
+
+        .process-step::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #F59E0B, transparent);
+        }
+
+        .process-step:last-child::after {
+            display: none;
+        }
+
+        /* Testimonial Card */
+        .testimonial-card {
+            background: linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(31, 41, 55, 0.8));
+            backdrop-filter: blur(10px);
+        }
+
+        /* Mobile Menu Animation */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mobile-menu-open {
+            animation: slideDown 0.3s ease-out;
+        }
+    </style>
+</head>
+
+<body class="relative">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-brand-dark/95 backdrop-blur-sm border-b border-gray-800 transition-all duration-300"
+        id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-fire text-brand-yellow text-2xl animate-pulse"></i>
+                    <span class="heading-font text-3xl tracking-wider text-white">BURGER<span
+                            class="text-brand-yellow">FORGE</span></span>
+                </div>
+
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home"
+                            class="hover:text-brand-yellow transition-colors px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#menu"
+                            class="hover:text-brand-yellow transition-colors px-3 py-2 rounded-md text-sm font-medium">Menu</a>
+                        <a href="#gallery"
+                            class="hover:text-brand-yellow transition-colors px-3 py-2 rounded-md text-sm font-medium">Gallery</a>
+                        <a href="#chefs"
+                            class="hover:text-brand-yellow transition-colors px-3 py-2 rounded-md text-sm font-medium">Chefs</a>
+                        <a href="#about"
+                            class="hover:text-brand-yellow transition-colors px-3 py-2 rounded-md text-sm font-medium">About</a>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleCart()"
+                        class="relative group p-2 text-gray-300 hover:text-white transition-colors">
+                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        <span id="cart-count"
+                            class="absolute -top-1 -right-1 bg-brand-red text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center transform group-hover:scale-110 transition-transform">0</span>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="md:hidden text-gray-300 hover:text-white p-2">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-brand-dark border-b border-gray-800 mobile-menu-open" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800">Home</a>
+                <a href="#menu" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800">Menu</a>
+                <a href="#gallery"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800">Gallery</a>
+                <a href="#chefs" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800">Chefs</a>
+                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative pt-24 pb-12 lg:pt-32 lg:pb-24 overflow-hidden parallax-bg">
+        <!-- Animated Background Elements -->
+        <div class="absolute top-20 left-10 w-32 h-32 bg-brand-yellow/10 rounded-full blur-3xl animate-pulse"></div>
+        <div
+            class="absolute bottom-20 right-10 w-40 h-40 bg-brand-red/10 rounded-full blur-3xl animate-pulse delay-700">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left space-y-6 animate-slideInLeft">
+                    <span
+                        class="inline-block text-brand-yellow font-bold tracking-widest uppercase text-sm px-4 py-2 bg-brand-yellow/10 rounded-full border border-brand-yellow/20">Taste
+                        the Legend</span>
+                    <h1 class="heading-font text-6xl lg:text-8xl leading-none text-white">
+                        Forged in <br>
+                        <span class="gradient-text">Fire & Flavor</span>
+                    </h1>
+                    <p class="text-gray-400 text-lg max-w-lg mx-auto lg:mx-0">
+                        Experience the crunch, the juice, and the melting cheese. Crafted with 100% premium beef and
+                        secret sauces that will blow your mind.
+                    </p>
+
+                    <!-- Stats Row -->
+                    <div class="grid grid-cols-3 gap-4 py-6 max-w-lg mx-auto lg:mx-0">
+                        <div class="text-center">
+                            <div class="heading-font text-3xl text-brand-yellow">50K+</div>
+                            <div class="text-xs text-gray-500 uppercase">Happy Customers</div>
+                        </div>
+                        <div class="text-center border-x border-gray-800">
+                            <div class="heading-font text-3xl text-brand-yellow">25+</div>
+                            <div class="text-xs text-gray-500 uppercase">Burger Varieties</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="heading-font text-3xl text-brand-yellow">4.9★</div>
+                            <div class="text-xs text-gray-500 uppercase">Customer Rating</div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+                        <a href="#menu"
+                            class="bg-brand-yellow hover:bg-brand-orange text-brand-darker font-bold py-4 px-8 rounded-full transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg hover:shadow-brand-yellow/50">
+                            Order Now <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="#menu"
+                            class="border-2 border-gray-600 hover:border-brand-yellow text-white font-bold py-4 px-8 rounded-full transition-all flex items-center justify-center gap-2 hover:bg-brand-yellow/10">
+                            <i class="fa-solid fa-book-open"></i> View Menu
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative group animate-fadeInUp">
+                    <div
+                        class="absolute -inset-4 bg-gradient-to-r from-brand-yellow to-brand-red rounded-full opacity-20 blur-3xl group-hover:opacity-30 transition-opacity duration-1000 animate-pulse-glow">
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                        alt="Giant Burger"
+                        class="relative w-full max-w-lg mx-auto transform hover:rotate-3 transition-transform duration-500 drop-shadow-2xl animate-float">
+
+                    <!-- Floating Labels -->
+                    <div
+                        class="absolute top-10 -left-5 bg-brand-dark/90 backdrop-blur-sm px-4 py-2 rounded-lg border border-brand-yellow/30 shadow-xl animate-pulse">
+                        <div class="text-brand-yellow font-bold text-sm">🔥 Bestseller</div>
+                    </div>
+                    <div
+                        class="absolute bottom-20 -right-5 bg-brand-dark/90 backdrop-blur-sm px-4 py-2 rounded-lg border border-green-500/30 shadow-xl animate-pulse delay-500">
+                        <div class="text-green-400 font-bold text-sm">✓ Premium Quality</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-gradient-to-b from-brand-darker to-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="stat-card p-6 rounded-2xl text-center transform hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-burger text-4xl text-brand-yellow mb-3"></i>
+                    <div class="heading-font text-4xl text-white mb-1" data-count="50000">0</div>
+                    <div class="text-gray-400 text-sm">Burgers Served</div>
+                </div>
+                <div class="stat-card p-6 rounded-2xl text-center transform hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-award text-4xl text-brand-yellow mb-3"></i>
+                    <div class="heading-font text-4xl text-white mb-1" data-count="15">0</div>
+                    <div class="text-gray-400 text-sm">Awards Won</div>
+                </div>
+                <div class="stat-card p-6 rounded-2xl text-center transform hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-users text-4xl text-brand-yellow mb-3"></i>
+                    <div class="heading-font text-4xl text-white mb-1" data-count="12000">0</div>
+                    <div class="text-gray-400 text-sm">Happy Customers</div>
+                </div>
+                <div class="stat-card p-6 rounded-2xl text-center transform hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-star text-4xl text-brand-yellow mb-3"></i>
+                    <div class="heading-font text-4xl text-white mb-1">4.9</div>
+                    <div class="text-gray-400 text-sm">Average Rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-gray-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-brand-yellow font-bold tracking-widest uppercase text-sm">Discover Flavors</span>
+                <h2 class="heading-font text-5xl text-white mb-4 mt-2">Our Masterpieces</h2>
+                <div class="w-24 h-1 bg-brand-yellow mx-auto rounded-full"></div>
+                <p class="mt-4 text-gray-400">Fresh ingredients. Secret recipes. Unforgettable taste.</p>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex justify-center gap-4 mb-12 flex-wrap">
+                <button
+                    class="filter-btn active px-6 py-3 rounded-full border-2 border-brand-yellow bg-brand-yellow text-brand-darker font-bold transition-all hover:shadow-lg hover:shadow-brand-yellow/50"
+                    onclick="filterMenu('all')">
+                    <i class="fa-solid fa-grip mr-2"></i>All
+                </button>
+                <button
+                    class="filter-btn px-6 py-3 rounded-full border-2 border-gray-700 text-gray-300 hover:border-brand-yellow hover:text-white transition-all"
+                    onclick="filterMenu('beef')">
+                    <i class="fa-solid fa-drumstick-bite mr-2"></i>Beef
+                </button>
+                <button
+                    class="filter-btn px-6 py-3 rounded-full border-2 border-gray-700 text-gray-300 hover:border-brand-yellow hover:text-white transition-all"
+                    onclick="filterMenu('chicken')">
+                    <i class="fa-solid fa-egg mr-2"></i>Chicken
+                </button>
+                <button
+                    class="filter-btn px-6 py-3 rounded-full border-2 border-gray-700 text-gray-300 hover:border-brand-yellow hover:text-white transition-all"
+                    onclick="filterMenu('veg')">
+                    <i class="fa-solid fa-leaf mr-2"></i>Veggie
+                </button>
+            </div>
+
+            <!-- Menu Grid -->
+            <div id="menu-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Items will be injected here via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-brand-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-brand-yellow font-bold tracking-widest uppercase text-sm">Visual Feast</span>
+                <h2 class="heading-font text-5xl text-white mb-4 mt-2">Burger Gallery</h2>
+                <div class="w-24 h-1 bg-brand-yellow mx-auto rounded-full"></div>
+                <p class="mt-4 text-gray-400">A picture is worth a thousand bites.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Gallery Item 1 -->
+                <div class="gallery-item relative overflow-hidden rounded-xl h-64 group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt="Burger">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                        <span class="text-white font-bold">Classic Deluxe</span>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 2 -->
+                <div class="gallery-item relative overflow-hidden rounded-xl h-64 group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt="Burger">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                        <span class="text-white font-bold">BBQ Special</span>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 3 -->
+                <div class="gallery-item relative overflow-hidden rounded-xl h-64 group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1615557960916-5f4791effe9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt="Burger">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                        <span class="text-white font-bold">Spicy Inferno</span>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 4 -->
+                <div class="gallery-item relative overflow-hidden rounded-xl h-64 group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt="Burger">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                        <span class="text-white font-bold">Mushroom Swiss</span>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 5 -->
+                <div class="gallery-item relative overflow-hidden rounded-xl h-64 group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt="Burger">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                        <span class="text-white font-bold">Green Earth</span>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 6 -->
+                <div class="gallery-item relative overflow-hidden rounded-xl h-64 group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1586190848861-99c9574548e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt="Burger">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                        <span class="text-white font-bold">The Beast</span>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 7 -->
+                <div class="gallery-item relative overflow-hidden rounded-xl h-64 group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt="Burger">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                        <span class="text-white font-bold">Cheese Lovers</span>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 8 -->
+                <div class="gallery-item relative overflow-hidden rounded-xl h-64 group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt="Burger">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                        <span class="text-white font-bold">Double Stack</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="py-20 bg-gray-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-brand-yellow font-bold tracking-widest uppercase text-sm">The Journey</span>
+                <h2 class="heading-font text-5xl text-white mb-4 mt-2">How We Craft Perfection</h2>
+                <div class="w-24 h-1 bg-brand-yellow mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="process-step text-center relative">
+                    <div
+                        class="w-20 h-20 bg-brand-yellow/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-brand-yellow">
+                        <span class="heading-font text-3xl text-brand-yellow">01</span>
+                    </div>
+                    <h3 class="heading-font text-2xl text-white mb-2">Select</h3>
+                    <p class="text-gray-400 text-sm">Choose from our premium selection of fresh ingredients</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="process-step text-center relative">
+                    <div
+                        class="w-20 h-20 bg-brand-yellow/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-brand-yellow">
+                        <span class="heading-font text-3xl text-brand-yellow">02</span>
+                    </div>
+                    <h3 class="heading-font text-2xl text-white mb-2">Season</h3>
+                    <p class="text-gray-400 text-sm">Our secret blend of spices for maximum flavor</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="process-step text-center relative">
+                    <div
+                        class="w-20 h-20 bg-brand-yellow/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-brand-yellow">
+                        <span class="heading-font text-3xl text-brand-yellow">03</span>
+                    </div>
+                    <h3 class="heading-font text-2xl text-white mb-2">Grill</h3>
+                    <p class="text-gray-400 text-sm">Flame-grilled to perfection at precise temperature</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="process-step text-center relative">
+                    <div
+                        class="w-20 h-20 bg-brand-yellow/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-brand-yellow">
+                        <span class="heading-font text-3xl text-brand-yellow">04</span>
+                    </div>
+                    <h3 class="heading-font text-2xl text-white mb-2">Serve</h3>
+                    <p class="text-gray-400 text-sm">Hot, fresh, and delivered with a smile</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chefs Section -->
+    <section id="chefs" class="py-20 bg-brand-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-brand-yellow font-bold tracking-widest uppercase text-sm">The Artists</span>
+                <h2 class="heading-font text-5xl text-white mb-4 mt-2">Meet the Masters</h2>
+                <div class="w-24 h-1 bg-brand-yellow mx-auto rounded-full"></div>
+                <p class="mt-4 text-gray-400">The culinary artists behind the flavor.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Chef 1 -->
+                <div
+                    class="group relative overflow-hidden rounded-2xl transform hover:scale-105 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1583394293214-28ded15ee548?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                        alt="Head Chef"
+                        class="w-full h-96 object-cover transition-transform duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent flex flex-col justify-end p-6">
+                        <h3 class="heading-font text-3xl text-white mb-1">Gordon Ramsay</h3>
+                        <p class="text-brand-yellow font-bold uppercase tracking-wider text-sm mb-2">Head Chef</p>
+                        <p
+                            class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            Master of the flame-grilled perfection. With 15 years of experience, he ensures every burger
+                            is a masterpiece.</p>
+                        <div class="flex gap-3 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <a href="#" class="text-gray-400 hover:text-brand-yellow transition-colors"><i
+                                    class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-brand-yellow transition-colors"><i
+                                    class="fa-brands fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chef 2 -->
+                <div
+                    class="group relative overflow-hidden rounded-2xl transform hover:scale-105 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                        alt="Sous Chef"
+                        class="w-full h-96 object-cover transition-transform duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent flex flex-col justify-end p-6">
+                        <h3 class="heading-font text-3xl text-white mb-1">Sarah Jenkins</h3>
+                        <p class="text-brand-yellow font-bold uppercase tracking-wider text-sm mb-2">Flavor Alchemist
+                        </p>
+                        <p
+                            class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            The genius behind our secret sauces. She blends spices from around the world to create
+                            unique taste profiles.</p>
+                        <div class="flex gap-3 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <a href="#" class="text-gray-400 hover:text-brand-yellow transition-colors"><i
+                                    class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-brand-yellow transition-colors"><i
+                                    class="fa-brands fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chef 3 -->
+                <div
+                    class="group relative overflow-hidden rounded-2xl transform hover:scale-105 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1581299894007-aaa50297cf16?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                        alt="Grill Master"
+                        class="w-full h-96 object-cover transition-transform duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent flex flex-col justify-end p-6">
+                        <h3 class="heading-font text-3xl text-white mb-1">Marco Pierre</h3>
+                        <p class="text-brand-yellow font-bold uppercase tracking-wider text-sm mb-2">Grill Master</p>
+                        <p
+                            class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            Precision is his middle name. He manages the heat to ensure every patty is juicy and
+                            perfectly charred.</p>
+                        <div class="flex gap-3 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <a href="#" class="text-gray-400 hover:text-brand-yellow transition-colors"><i
+                                    class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-brand-yellow transition-colors"><i
+                                    class="fa-brands fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-gray-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-brand-yellow font-bold tracking-widest uppercase text-sm">What They Say</span>
+                <h2 class="heading-font text-5xl text-white mb-4 mt-2">Customer Love</h2>
+                <div class="w-24 h-1 bg-brand-yellow mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div
+                    class="testimonial-card p-6 rounded-2xl border border-gray-800 hover:border-brand-yellow/50 transition-all">
+                    <div class="flex gap-1 mb-4">
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                    </div>
+                    <p class="text-gray-300 mb-6 italic">"The best burger I've ever had! The combination of flavors is
+                        absolutely mind-blowing. Will definitely order again!"</p>
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-12 h-12 bg-brand-yellow rounded-full flex items-center justify-center text-brand-darker font-bold">
+                            JD
+                        </div>
+                        <div>
+                            <div class="text-white font-bold">John Doe</div>
+                            <div class="text-gray-500 text-sm">Food Blogger</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div
+                    class="testimonial-card p-6 rounded-2xl border border-gray-800 hover:border-brand-yellow/50 transition-all">
+                    <div class="flex gap-1 mb-4">
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                    </div>
+                    <p class="text-gray-300 mb-6 italic">"BurgerForge has ruined all other burgers for me. The quality
+                        and taste are unmatched. Absolutely worth every penny!"</p>
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-12 h-12 bg-brand-yellow rounded-full flex items-center justify-center text-brand-darker font-bold">
+                            AS
+                        </div>
+                        <div>
+                            <div class="text-white font-bold">Ahmed Shah</div>
+                            <div class="text-gray-500 text-sm">Regular Customer</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div
+                    class="testimonial-card p-6 rounded-2xl border border-gray-800 hover:border-brand-yellow/50 transition-all">
+                    <div class="flex gap-1 mb-4">
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                        <i class="fa-solid fa-star text-brand-yellow"></i>
+                    </div>
+                    <p class="text-gray-300 mb-6 italic">"Fast delivery, hot food, and amazing taste! The veggie burger
+                        is surprisingly delicious. Highly recommend!"</p>
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-12 h-12 bg-brand-yellow rounded-full flex items-center justify-center text-brand-darker font-bold">
+                            MK
+                        </div>
+                        <div>
+                            <div class="text-white font-bold">Maria Khan</div>
+                            <div class="text-gray-500 text-sm">Health Enthusiast</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About/Story Section -->
+    <section id="about" class="py-20 bg-brand-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                        class="rounded-2xl shadow-2xl" alt="Our Story">
+                    <div class="absolute -bottom-6 -right-6 bg-brand-yellow text-brand-darker p-6 rounded-xl shadow-xl">
+                        <div class="heading-font text-4xl">10+</div>
+                        <div class="text-sm font-bold">Years of Excellence</div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="text-brand-yellow font-bold tracking-widest uppercase text-sm">Our Journey</span>
+                    <h2 class="heading-font text-5xl text-white mb-6 mt-2">The BurgerForge Story</h2>
+                    <p class="text-gray-400 mb-4 leading-relaxed">
+                        It all started in 2015 with a simple dream: to create the perfect burger. Our founder, a
+                        culinary enthusiast with a passion for flavors, spent countless nights experimenting with
+                        recipes, sourcing the finest ingredients, and perfecting the art of grilling.
+                    </p>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        Today, BurgerForge stands as a testament to quality, innovation, and dedication. We've served
+                        over 50,000 burgers, won multiple awards, and created a loyal community of burger lovers who
+                        keep coming back for more.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-check-circle text-brand-yellow text-xl mt-1"></i>
+                            <div>
+                                <div class="text-white font-bold mb-1">100% Fresh Ingredients</div>
+                                <div class="text-gray-500 text-sm">Locally sourced daily</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-check-circle text-brand-yellow text-xl mt-1"></i>
+                            <div>
+                                <div class="text-white font-bold mb-1">Secret Recipes</div>
+                                <div class="text-gray-500 text-sm">Unique flavor profiles</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-check-circle text-brand-yellow text-xl mt-1"></i>
+                            <div>
+                                <div class="text-white font-bold mb-1">Expert Chefs</div>
+                                <div class="text-gray-500 text-sm">Years of experience</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-check-circle text-brand-yellow text-xl mt-1"></i>
+                            <div>
+                                <div class="text-white font-bold mb-1">Fast Delivery</div>
+                                <div class="text-gray-500 text-sm">Hot & fresh guaranteed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-brand-darker">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div
+                    class="p-8 rounded-2xl bg-gray-900 border border-gray-800 hover:border-brand-yellow transition-all transform hover:-translate-y-2 duration-300">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-brand-yellow to-brand-orange rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl shadow-lg">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <h3 class="heading-font text-2xl mb-3">Fast Delivery</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Hot and fresh to your doorstep within 30 minutes.
+                        We value your time as much as our burgers.</p>
+                </div>
+                <div
+                    class="p-8 rounded-2xl bg-gray-900 border border-gray-800 hover:border-brand-yellow transition-all transform hover:-translate-y-2 duration-300">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl shadow-lg">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <h3 class="heading-font text-2xl mb-3">Fresh Ingredients</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Locally sourced vegetables and premium meats every
+                        single day. No compromises on quality.</p>
+                </div>
+                <div
+                    class="p-8 rounded-2xl bg-gray-900 border border-gray-800 hover:border-brand-yellow transition-all transform hover:-translate-y-2 duration-300">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl shadow-lg">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <h3 class="heading-font text-2xl mb-3">Top Quality</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Rated #1 Burger Joint in the city by food critics
+                        and thousands of happy customers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleCart()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-gray-900 border-l border-gray-800 shadow-2xl flex flex-col transform transition-transform duration-300 translate-x-full"
+            id="cart-panel">
+            <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900">
+                <h2 class="heading-font text-3xl text-white">Your Order</h2>
+                <button onclick="toggleCart()" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6 space-y-4" id="cart-items">
+                <div class="text-center text-gray-500 mt-10">
+                    <i class="fa-solid fa-basket-shopping text-4xl mb-3 opacity-50"></i>
+                    <p>Your cart is empty.</p>
+                    <button onclick="toggleCart()"
+                        class="mt-4 text-brand-yellow underline text-sm hover:text-brand-orange transition-colors">Browse
+                        Menu</button>
+                </div>
+            </div>
+            <div class="p-6 border-t border-gray-800 bg-gray-900">
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between text-gray-400 text-sm">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal">PKR 0</span>
+                    </div>
+                    <div class="flex justify-between text-gray-400 text-sm">
+                        <span>Tax (5%)</span>
+                        <span id="cart-tax">PKR 0</span>
+                    </div>
+                    <div class="flex justify-between text-white text-xl font-bold pt-2 border-t border-gray-800">
+                        <span>Total</span>
+                        <span id="cart-total">PKR 0</span>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <input type="text" id="customer-name" placeholder="Your Name"
+                        class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-brand-yellow transition-colors">
+                    <button onclick="checkoutWhatsApp()"
+                        class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-green-500/50">
+                        <i class="fa-brands fa-whatsapp text-xl"></i> Order via WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast"
+        class="fixed bottom-5 right-5 bg-brand-yellow text-brand-darker px-6 py-4 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-[70] flex items-center gap-3 font-bold">
+        <i class="fa-solid fa-check-circle"></i>
+        <span id="toast-message">Item added to cart!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black py-12 border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-fire text-brand-yellow text-xl"></i>
+                        <span class="heading-font text-2xl tracking-wider text-white">BURGER<span
+                                class="text-brand-yellow">FORGE</span></span>
+                    </div>
+                    <p class="text-gray-500 text-sm">Crafting the perfect burger experience since 2015.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Quick Links</h4>
+                    <div class="space-y-2">
+                        <a href="#home"
+                            class="block text-gray-500 hover:text-brand-yellow transition-colors text-sm">Home</a>
+                        <a href="#menu"
+                            class="block text-gray-500 hover:text-brand-yellow transition-colors text-sm">Menu</a>
+                        <a href="#about"
+                            class="block text-gray-500 hover:text-brand-yellow transition-colors text-sm">About</a>
+                        <a href="#chefs"
+                            class="block text-gray-500 hover:text-brand-yellow transition-colors text-sm">Chefs</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Contact</h4>
+                    <div class="space-y-2 text-sm text-gray-500">
+                        <p><i class="fa-solid fa-phone text-brand-yellow mr-2"></i> +92 349 0850016</p>
+                        <p><i class="fa-solid fa-envelope text-brand-yellow mr-2"></i> info@burgerforge.com</p>
+                        <p><i class="fa-solid fa-location-dot text-brand-yellow mr-2"></i> Karachi, Pakistan</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Follow Us</h4>
+                    <div class="flex gap-3">
+                        <a href="#"
+                            class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:bg-brand-yellow hover:text-brand-darker transition-all">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:bg-brand-yellow hover:text-brand-darker transition-all">
+                            <i class="fa-brands fa-facebook"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:bg-brand-yellow hover:text-brand-darker transition-all">
+                            <i class="fa-brands fa-twitter"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:bg-brand-yellow hover:text-brand-darker transition-all">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-900 pt-8 text-center">
+                <p class="text-gray-500 text-sm">&copy; 2023 BurgerForge. All rights reserved. Made with <i
+                        class="fa-solid fa-heart text-red-500"></i> and <i
+                        class="fa-solid fa-burger text-brand-yellow"></i></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const burgers = [
+            {
+                id: 1,
+                name: "The Classic Forge",
+                price: 1250,
+                category: "beef",
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                description: "The definitive burger experience. Two premium smashed beef patties, perfectly seared to lock in juices, layered with melted American cheese, crisp organic lettuce, vine-ripened tomatoes, and our secret signature Forge Sauce.",
+                ingredients: ["2x Premium Beef Patty", "Melted American Cheese", "Organic Lettuce", "Vine Tomatoes", "Signature Forge Sauce", "Brioche Bun"],
+                badge: "hot"
+            },
+            {
+                id: 2,
+                name: "Smoky BBQ Bacon",
+                price: 1600,
+                category: "beef",
+                image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                description: "A symphony of smoky flavors. 100% Angus beef patty topped with crispy applewood smoked bacon, golden onion rings, aged cheddar cheese, and drenched in our house-made hickory smoked BBQ sauce.",
+                ingredients: ["Angus Beef Patty", "Applewood Smoked Bacon", "Golden Onion Rings", "Aged Cheddar", "Hickory BBQ Sauce"],
+                badge: "hot"
+            },
+            {
+                id: 3,
+                name: "Spicy Inferno",
+                price: 1450,
+                category: "chicken",
+                image: "https://images.unsplash.com/photo-1615557960916-5f4791effe9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                description: "Ignite your taste buds. Succulent crispy fried chicken thigh glazed with a fiery ghost pepper sauce, topped with spicy jalapeños, melted pepper jack cheese, and a cooling spicy mayo to balance the heat.",
+                ingredients: ["Crispy Chicken Thigh", "Ghost Pepper Glaze", "Fresh Jalapeños", "Pepper Jack Cheese", "Spicy Mayo"],
+                badge: "new"
+            },
+            {
+                id: 4,
+                name: "Mushroom Swiss Truffle",
+                price: 1550,
+                category: "beef",
+                image: "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                description: "Sophisticated and savory. Juicy beef patty crowned with sautéed truffle-infused wild mushrooms, sweet caramelized onions, melted Swiss cheese, and a rich garlic aioli for an umami explosion.",
+                ingredients: ["Juicy Beef Patty", "Truffle Wild Mushrooms", "Swiss Cheese", "Caramelized Onions", "Garlic Aioli"]
+            },
+            {
+                id: 5,
+                name: "The Green Earth",
+                price: 1350,
+                category: "veg",
+                image: "https://images.unsplash.com/photo-1550547660-d9450f859349?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                description: "Plant-based never tasted this good. A grilled Beyond Meat patty paired with fresh avocado smash, tangy pickled red onions, peppery arugula, and a zesty vegan herb mayo on a whole wheat bun.",
+                ingredients: ["Beyond Meat Patty", "Fresh Avocado Smash", "Pickled Red Onions", "Baby Arugula", "Vegan Herb Mayo"],
+                badge: "new"
+            },
+            {
+                id: 7,
+                name: "Crispy Chicken Ranch",
+                price: 1400,
+                category: "chicken",
+                image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                description: "Crispy, crunchy, and oh-so-satisfying. Buttermilk fried chicken breast with creamy ranch dressing, crisp lettuce, ripe tomatoes, and pickles on a toasted sesame bun.",
+                ingredients: ["Buttermilk Fried Chicken", "Ranch Dressing", "Crisp Lettuce", "Fresh Tomatoes", "Pickles"]
+            },
+            {
+                id: 8,
+                name: "Mediterranean Lamb",
+                price: 1750,
+                category: "beef",
+                image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                description: "Exotic flavors meet classic burger. Premium lamb patty seasoned with Mediterranean spices, topped with feta cheese, cucumber tzatziki, fresh mint, and sun-dried tomatoes.",
+                ingredients: ["Premium Lamb Patty", "Feta Cheese", "Tzatziki Sauce", "Fresh Mint", "Sun-Dried Tomatoes"],
+                badge: "new"
+            },
+            {
+                id: 9,
+                name: "Buffalo Blue Cheese",
+                price: 1500,
+                category: "chicken",
+                image: "https://images.unsplash.com/photo-1561758033-d89a9ad46330?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                description: "Bold and tangy. Crispy buffalo chicken with creamy blue cheese dressing, celery slaw, and a drizzle of hot sauce for those who like it spicy.",
+                ingredients: ["Buffalo Chicken", "Blue Cheese Dressing", "Celery Slaw", "Hot Sauce", "Brioche Bun"]
+            }
+        ];
+
+        let cart = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMenu('all');
+            animateStats();
+        });
+
+        function renderMenu(category) {
+            const grid = document.getElementById('menu-grid');
+            grid.innerHTML = '';
+
+            const filteredBurgers = category === 'all'
+                ? burgers
+                : burgers.filter(b => b.category === category);
+
+            filteredBurgers.forEach(burger => {
+                const card = document.createElement('div');
+                card.className = 'burger-card bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 hover:border-brand-yellow transition-all duration-300 group flex flex-col h-full shadow-xl';
+
+                const badgeHTML = burger.badge ? `
+                    <div class="absolute top-3 left-3 badge-${burger.badge} text-white font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wide z-10">
+                        ${burger.badge === 'hot' ? '🔥 Bestseller' : '✨ New'}
+                    </div>
+                ` : '';
+
+                card.innerHTML = `
+                    <div class="relative overflow-hidden h-56">
+                        ${badgeHTML}
+                        <img src="${burger.image}" alt="${burger.name}" class="burger-img w-full h-full object-cover transition-transform duration-500">
+                        <div class="absolute top-3 right-3 bg-brand-yellow text-brand-darker font-bold px-3 py-1 rounded-full text-sm shadow-lg">
+                            PKR ${burger.price.toFixed(0)}
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <h3 class="heading-font text-2xl text-white tracking-wide mb-2">${burger.name}</h3>
+                        <p class="text-gray-400 text-sm mb-4 leading-relaxed line-clamp-2">${burger.description}</p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            ${burger.ingredients.slice(0, 3).map(ing => `<span class="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded border border-gray-700">${ing}</span>`).join('')}
+                            ${burger.ingredients.length > 3 ? `<span class="text-xs text-gray-500 px-1 py-1">+${burger.ingredients.length - 3} more</span>` : ''}
+                        </div>
+
+                        <div class="mt-auto pt-4 border-t border-gray-800">
+                            <button onclick="addToCart(${burger.id})" class="w-full bg-gradient-to-r from-brand-yellow to-brand-orange hover:from-brand-orange hover:to-brand-yellow text-brand-darker font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-brand-yellow/50 transform hover:scale-105">
+                                <i class="fa-solid fa-plus"></i> Add to Order
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-yellow', 'text-brand-darker', 'border-brand-yellow', 'shadow-lg', 'shadow-brand-yellow/50');
+                btn.classList.add('text-gray-300', 'border-gray-700');
+            });
+        }
+
+        function filterMenu(category) {
+            renderMenu(category);
+
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-yellow', 'text-brand-darker', 'border-brand-yellow', 'shadow-lg', 'shadow-brand-yellow/50');
+                btn.classList.add('text-gray-300', 'border-gray-700');
+            });
+            event.target.classList.remove('text-gray-300', 'border-gray-700');
+            event.target.classList.add('bg-brand-yellow', 'text-brand-darker', 'border-brand-yellow', 'shadow-lg', 'shadow-brand-yellow/50');
+        }
+
+        function addToCart(id) {
+            const burger = burgers.find(b => b.id === id);
+            const existingItem = cart.find(item => item.id === id);
+
+            if (existingItem) {
+                existingItem.qty++;
+            } else {
+                cart.push({ ...burger, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast(`Added ${burger.name} to cart`);
+        }
+
+        function updateQty(id, change) {
+            const itemIndex = cart.findIndex(item => item.id === id);
+            if (itemIndex > -1) {
+                cart[itemIndex].qty += change;
+                if (cart[itemIndex].qty <= 0) {
+                    cart.splice(itemIndex, 1);
+                }
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const cartContainer = document.getElementById('cart-items');
+            const countBadge = document.getElementById('cart-count');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const taxEl = document.getElementById('cart-tax');
+            const totalEl = document.getElementById('cart-total');
+
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            countBadge.innerText = totalQty;
+
+            countBadge.classList.add('scale-125');
+            setTimeout(() => countBadge.classList.remove('scale-125'), 200);
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const tax = subtotal * 0.05;
+            const total = subtotal + tax;
+
+            subtotalEl.innerText = `PKR ${subtotal.toFixed(0)}`;
+            taxEl.innerText = `PKR ${tax.toFixed(0)}`;
+            totalEl.innerText = `PKR ${total.toFixed(0)}`;
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = `
+                    <div class="text-center text-gray-500 mt-10">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-3 opacity-50"></i>
+                        <p>Your cart is empty.</p>
+                        <button onclick="toggleCart()" class="mt-4 text-brand-yellow underline text-sm hover:text-brand-orange transition-colors">Browse Menu</button>
+                    </div>
+                `;
+            } else {
+                cartContainer.innerHTML = cart.map(item => `
+                    <div class="flex gap-4 bg-gray-800/50 p-3 rounded-lg border border-gray-700 hover:border-gray-600 transition-colors">
+                        <img src="${item.image}" class="w-16 h-16 object-cover rounded-md" alt="${item.name}">
+                        <div class="flex-1">
+                            <h4 class="text-white font-bold text-sm line-clamp-1">${item.name}</h4>
+                            <p class="text-brand-yellow text-sm font-bold">PKR ${(item.price * item.qty).toFixed(0)}</p>
+                            <div class="flex items-center gap-3 mt-2">
+                                <button onclick="updateQty(${item.id}, -1)" class="w-7 h-7 rounded bg-gray-700 hover:bg-gray-600 text-white flex items-center justify-center transition-colors">-</button>
+                                <span class="text-sm text-gray-300 font-bold w-6 text-center">${item.qty}</span>
+                                <button onclick="updateQty(${item.id}, 1)" class="w-7 h-7 rounded bg-brand-yellow hover:bg-brand-orange text-brand-darker flex items-center justify-center transition-colors">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const panel = document.getElementById('cart-panel');
+
+            if (sidebar.classList.contains('hidden')) {
+                sidebar.classList.remove('hidden');
+                setTimeout(() => {
+                    panel.classList.remove('translate-x-full');
+                }, 10);
+            } else {
+                panel.classList.add('translate-x-full');
+                setTimeout(() => {
+                    sidebar.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                showToast("Your cart is empty!", "error");
+                return;
+            }
+
+            const nameInput = document.getElementById('customer-name');
+            const name = nameInput.value.trim();
+
+            if (!name) {
+                nameInput.classList.add('border-red-500', 'animate-pulse');
+                setTimeout(() => nameInput.classList.remove('border-red-500', 'animate-pulse'), 2000);
+                showToast("Please enter your name", "error");
+                return;
+            }
+
+            const orderId = Math.floor(Math.random() * 1000000);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const total = subtotal * 1.05;
+
+            let message = `*NEW ORDER FROM BURGERFORGE* 🔥%0a`;
+            message += `Order ID: #${orderId}%0a`;
+            message += `Customer: ${name}%0a`;
+            message += `------------------------------%0a`;
+
+            cart.forEach(item => {
+                message += `▪️ ${item.qty}x ${item.name} (PKR ${(item.price * item.qty).toFixed(0)})%0a`;
+            });
+
+            message += `------------------------------%0a`;
+            message += `*TOTAL AMOUNT: PKR ${total.toFixed(0)}*%0a`;
+            message += `------------------------------%0a`;
+            message += `Please confirm my order and send delivery time.`;
+
+            const phoneNumber = "923490850016";
+            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+
+            msgEl.innerText = message;
+
+            if (type === 'error') {
+                toast.classList.remove('bg-brand-yellow', 'text-brand-darker');
+                toast.classList.add('bg-red-500', 'text-white');
+            } else {
+                toast.classList.add('bg-brand-yellow', 'text-brand-darker');
+                toast.classList.remove('bg-red-500', 'text-white');
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Animate Stats Counter
+        function animateStats() {
+            const stats = document.querySelectorAll('[data-count]');
+            stats.forEach(stat => {
+                const target = parseInt(stat.dataset.count);
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        stat.textContent = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 30);
+            });
+        }
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg', 'bg-brand-dark');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
